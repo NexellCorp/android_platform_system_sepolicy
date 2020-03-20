@@ -1,0 +1,179 @@
+type criu, domain;
+type criu_exec, exec_type, file_type;
+
+allow criu self:capability { audit_control chown dac_override fsetid net_admin net_raw setgid setpcap setuid sys_chroot sys_nice sys_ptrace sys_resource };
+allow criu self:netlink_tcpdiag_socket { create nlmsg_read read write };
+allow criu self:netlink_route_socket { create nlmsg_read nlmsg_write read write };
+allow criu self:process { execmem ptrace setcurrent };
+allow criu self:rawip_socket { create getopt };
+allow criu self:tcp_socket { bind connect create getattr listen name_connect setopt shutdown };
+allowxperm criu self:unix_dgram_socket ioctl { priv_sock_ioctls unpriv_sock_ioctls CRIU_IOCTL_1 };
+
+allow criu criu_data_file:dir { add_name create getattr mounton open read remove_name rmdir write };
+allow criu criu_data_file:file { append create getattr open read write unlink };
+
+allow criu criu_exec:file execute_no_trans;
+
+allow criu adbd:dir search;
+allow criu adbd:file { open read };
+
+allow criu audioserver:dir search;
+allow criu audioserver:file { open read };
+
+allow criu bluetooth:file read;
+allow criu bluetooth:process dyntransition;
+
+allow criu bootanim:dir search;
+allow criu bootanim:file { open read };
+
+allow criu cgroup:dir { add_name create open read search setattr };
+allow criu cgroup:file { getattr open read };
+allow criu cgroup:filesystem { mount unmount };
+
+allow criu dalvikcache_data_file:file { getattr open read };
+
+allow criu dex2oat:dir search;
+allow criu dex2oat:file { open read };
+
+allow criu gatekeeperd:dir search;
+allow criu gatekeeperd:file { open read };
+
+allow criu hwservicemanager:dir search;
+allow criu hwservicemanager:file { open read };
+allow criu hwservicemanager_prop:file { getattr open read };
+
+allow criu init:dir search;
+allow criu init:file { open read };
+
+allow criu input_device:chr_file { read write };
+
+allow criu installd:dir search;
+allow criu installd:file { open read };
+
+allow criu kernel:dir search;
+allow criu kernel:file { open read };
+allow criu kernel:security check_context;
+allow criu kernel:system module_request;
+
+allow criu keystore:dir search;
+allow criu keystore:file { open read };
+
+allow criu lmkd:dir search;
+allow criu lmkd:file { open read };
+
+allow criu logd:dir search;
+allow criu logd:file { open read };
+
+allow criu mediacodec:dir search;
+allow criu mediacodec:file { open read };
+
+allow criu mediaextractor:dir search;
+allow criu mediaextractor:file { open read };
+
+allow criu mediametrics:dir search;
+allow criu mediametrics:file { open read };
+
+allow criu mediaserver:dir search;
+allow criu mediaserver:file { open read };
+
+allow criu mnt_user_file:dir { getattr setattr };
+
+allow criu netd:dir search;
+allow criu netd:file { open read };
+
+allow criu node:tcp_socket { getattr node_bind };
+
+allow criu overlay_prop:file { getattr open read };
+
+allow criu platform_app:dir search;
+allow criu platform_app:file { open read };
+allow criu platform_app:process dyntransition;
+
+allow criu port:tcp_socket name_connect;
+
+allow criu proc:dir mounton;
+allow criu proc:file { lock open read write };
+allow criu proc:filesystem mount;
+
+allow criu proc_net:file { getattr open read };
+
+allow criu proc_pid_max:file { open read };
+
+allow criu proc_security:file { open read };
+
+allow criu rootfs:dir { mounton open read };
+
+allow criu runtime_event_log_tags_file:file getattr;
+
+allow criu seapp_contexts_file:file { getattr open read };
+
+allow criu selinuxfs:file { open read write };
+
+allow criu servicemanager:dir search;
+allow criu servicemanager:file { open read };
+
+allow criu shell:dir search;
+allow criu shell:file { open read };
+
+allow criu shell_exec:file { entrypoint execute execute_no_trans getattr open read };
+
+allow criu socket_device:dir { add_name write };
+allow criu socket_device:sock_file { create getattr setattr };
+
+allow criu storage_file:dir mounton;
+
+allow criu surfaceflinger:dir search;
+allow criu surfaceflinger:fd use;
+allow criu surfaceflinger:file { open read };
+allow criu surfaceflinger:unix_stream_socket { read write };
+
+allow criu system_file:file { execute_no_trans lock };
+
+allow criu system_server:dir { getattr open read search };
+allow criu system_server:fd use;
+allow criu system_server:fifo_file { read write };
+allow criu system_server:file { getattr open read write };
+allow criu system_server:lnk_file { getattr read };
+allow criu system_server:process { dyntransition getpgid ptrace };
+allow criu system_server:udp_socket { read write };
+allow criu system_server:unix_stream_socket { read write };
+
+allow criu tmpfs:chr_file { ioctl open read };
+allow criu tmpfs:dir { add_name create mounton open read write };
+allow criu tmpfs:filesystem { mount unmount };
+
+allow criu tombstoned:dir search;
+allow criu tombstoned:file { open read };
+
+allow criu toolbox_exec:file { execute execute_no_trans getattr open read };
+
+allow criu ueventd:dir search;
+allow criu ueventd:file { open read };
+
+allow criu unlabeled:file { getattr open read };
+
+allow criu update_engine:dir search;
+allow criu update_engine:file { open read };
+
+allow criu vendor_init:dir search;
+allow criu vendor_init:file { open read };
+
+allow criu vndservicemanager:dir search;
+allow criu vndservicemanager:file { open read };
+
+allow criu vold:dir search;
+allow criu vold:file { open read };
+
+allow criu wificond:dir search;
+allow criu wificond:file { open read };
+
+allow criu zygote:dir { getattr open read search };
+allow criu zygote:fd use;
+allow criu zygote:file { getattr open read };
+allow criu zygote:lnk_file { getattr read };
+allow criu zygote:process { getsched ptrace sigchld sigkill };
+allow criu zygote:unix_dgram_socket { getattr getopt read write };
+allow criu zygote:unix_stream_socket { getattr getopt read write };
+allow criu zygote_exec:file rx_file_perms;
+
+allow criu zygote_socket:sock_file getattr;

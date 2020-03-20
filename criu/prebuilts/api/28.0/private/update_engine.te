@@ -1,0 +1,6 @@
+typeattribute update_engine coredomain;
+
+init_daemon_domain(update_engine);
+
+# For CRIU
+allow update_engine runtime_event_log_tags_file:file { read open };

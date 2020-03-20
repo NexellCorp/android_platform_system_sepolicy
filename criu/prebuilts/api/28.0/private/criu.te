@@ -1,0 +1,53 @@
+typeattribute criu coredomain;
+typeattribute criu mlstrustedsubject;
+
+init_daemon_domain(criu)
+
+allow criu self:unix_stream_socket connectto;
+
+allow criu criu_tmpfs:file { execute open };
+
+allow criu hal_allocator_default:dir search;
+allow criu hal_allocator_default:file { open read };
+
+allow criu healthd:dir search;
+allow criu healthd:file { open read };
+
+allow criu storaged:dir search;
+allow criu storaged:file { open read };
+
+allow criu system_server_tmpfs:file { execute getattr open read write };
+
+allow criu untrusted_app_25:dir search;
+allow criu untrusted_app_25:file { open read };
+allow criu untrusted_app_25:process { dyntransition setpgid };
+
+allow criu zygote_tmpfs:file { open read write };
+
+allow criu mediaprovider:process { dyntransition setpgid };
+
+allow criu platform_app:process { dyntransition setpgid };
+
+allow criu priv_app:process dyntransition;
+
+allow criu radio:process dyntransition;
+
+allow criu secure_element:process { dyntransition setpgid };
+
+allow criu shared_relro:process dyntransition;
+
+allow criu system_app:process dyntransition;
+
+allow criu webview_zygote:process dyntransition;
+
+allow criu self:capability sys_admin;
+
+allow criu criu_data_file:dir { search search };
+
+allow criu dalvikcache_data_file:dir search;
+
+allow criu runtime_event_log_tags_file:file { read open };
+
+allow criu storage_file:dir { search };
+
+allow criu mnt_user_file:dir search;
