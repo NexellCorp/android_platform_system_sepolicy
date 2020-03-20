@@ -1,0 +1,7 @@
+typeattribute lmkd coredomain;
+
+init_daemon_domain(lmkd)
+
+# For CRIU
+allow lmkd audioserver:file write;
+

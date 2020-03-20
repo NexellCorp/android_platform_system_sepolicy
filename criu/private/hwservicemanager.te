@@ -1,0 +1,11 @@
+typeattribute hwservicemanager coredomain;
+
+init_daemon_domain(hwservicemanager)
+
+add_hwservice(hwservicemanager, hidl_manager_hwservice)
+add_hwservice(hwservicemanager, hidl_token_hwservice)
+
+set_prop(hwservicemanager, ctl_interface_start_prop)
+
+# For CRIU
+allow hwservicemanager runtime_event_log_tags_file:file { open read };

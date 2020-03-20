@@ -14,8 +14,14 @@ include $(BUILD_SYSTEM)/base_rules.mk
 # built to enable us to determine the diff between the current policy and the
 # $(version) policy, which will be used in tests to make sure that compatibility has
 # been maintained by our mapping files.
+# for CRIU
+ifeq ($(NEXELL_CRIU),true)
+$(version)_PLAT_PUBLIC_POLICY := $(LOCAL_PATH)/criu/prebuilts/api/$(version)/public
+$(version)_PLAT_PRIVATE_POLICY := $(LOCAL_PATH)/criu/prebuilts/api/$(version)/private
+else
 $(version)_PLAT_PUBLIC_POLICY := $(LOCAL_PATH)/prebuilts/api/$(version)/public
 $(version)_PLAT_PRIVATE_POLICY := $(LOCAL_PATH)/prebuilts/api/$(version)/private
+endif
 $(version)_plat_policy.conf := $(intermediates)/$(version)_plat_policy.conf
 $($(version)_plat_policy.conf): PRIVATE_MLS_SENS := $(MLS_SENS)
 $($(version)_plat_policy.conf): PRIVATE_MLS_CATS := $(MLS_CATS)
@@ -51,9 +57,16 @@ $(version)_plat_policy.conf :=
 # targeting the $(version) SELinux release.  This ensures that our policy will build
 # when used on a device that has non-platform policy targetting the $(version) release.
 $(version)_compat := $(intermediates)/$(version)_compat
+# for CRIU
+ifeq ($(NEXELL_CRIU),true)
+$(version)_mapping.cil := $(LOCAL_PATH)/criu/private/compat/$(version)/$(version).cil
+$(version)_mapping.ignore.cil := $(LOCAL_PATH)/criu/private/compat/$(version)/$(version).ignore.cil
+$(version)_nonplat := $(LOCAL_PATH)/criu/prebuilts/api/$(version)/nonplat_sepolicy.cil
+else
 $(version)_mapping.cil := $(LOCAL_PATH)/private/compat/$(version)/$(version).cil
 $(version)_mapping.ignore.cil := $(LOCAL_PATH)/private/compat/$(version)/$(version).ignore.cil
 $(version)_nonplat := $(LOCAL_PATH)/prebuilts/api/$(version)/nonplat_sepolicy.cil
+endif
 $($(version)_compat): PRIVATE_CIL_FILES := \
 $(built_plat_cil) $($(version)_mapping.cil) $($(version)_nonplat)
 $($(version)_compat): $(HOST_OUT_EXECUTABLES)/secilc \

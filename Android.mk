@@ -59,15 +59,34 @@ endif
 #    - combine mapping, platform and non-platform policy.
 #    - compile output binary policy file
 
+# for CRIU
+ifeq ($(NEXELL_CRIU),true)
+PLAT_PUBLIC_POLICY := $(LOCAL_PATH)/criu/public
+else
 PLAT_PUBLIC_POLICY := $(LOCAL_PATH)/public
+endif
+
 ifneq ( ,$(BOARD_PLAT_PUBLIC_SEPOLICY_DIR))
 PLAT_PUBLIC_POLICY += $(BOARD_PLAT_PUBLIC_SEPOLICY_DIR)
 endif
+
+# for CRIU
+ifeq ($(NEXELL_CRIU),true)
+PLAT_PRIVATE_POLICY := $(LOCAL_PATH)/criu/private
+else
 PLAT_PRIVATE_POLICY := $(LOCAL_PATH)/private
+endif
+
 ifneq ( ,$(BOARD_PLAT_PRIVATE_SEPOLICY_DIR))
 PLAT_PRIVATE_POLICY += $(BOARD_PLAT_PRIVATE_SEPOLICY_DIR)
 endif
+
+# # for CRIU
+# ifeq ($(NEXELL_CRIU),true)
+# PLAT_VENDOR_POLICY := $(LOCAL_PATH)/criu/vendor
+# else
 PLAT_VENDOR_POLICY := $(LOCAL_PATH)/vendor
+# endif
 REQD_MASK_POLICY := $(LOCAL_PATH)/reqd_mask
 
 # TODO: move to README when doing the README update and finalizing versioning.
@@ -1619,12 +1638,22 @@ LOCAL_MODULE_TAGS := tests
 
 include $(BUILD_SYSTEM)/base_rules.mk
 
+# for CRIU
+ifeq ($(NEXELL_CRIU),true)
+base_plat_public := $(LOCAL_PATH)/criu/public
+base_plat_private := $(LOCAL_PATH)/criu/private
+base_plat_public_prebuilt := \
+  $(LOCAL_PATH)/criu/prebuilts/api/$(PLATFORM_SEPOLICY_VERSION)/public
+base_plat_private_prebuilt := \
+  $(LOCAL_PATH)/criu/prebuilts/api/$(PLATFORM_SEPOLICY_VERSION)/private
+else
 base_plat_public := $(LOCAL_PATH)/public
 base_plat_private := $(LOCAL_PATH)/private
 base_plat_public_prebuilt := \
   $(LOCAL_PATH)/prebuilts/api/$(PLATFORM_SEPOLICY_VERSION)/public
 base_plat_private_prebuilt := \
   $(LOCAL_PATH)/prebuilts/api/$(PLATFORM_SEPOLICY_VERSION)/private
+endif
 
 all_frozen_files := $(call build_policy,$(sepolicy_build_files), \
 $(base_plat_public) $(base_plat_private) $(base_plat_public_prebuilt) $(base_plat_private_prebuilt))

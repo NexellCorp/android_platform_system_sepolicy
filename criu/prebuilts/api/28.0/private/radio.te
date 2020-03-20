@@ -1,0 +1,9 @@
+typeattribute radio coredomain;
+
+app_domain(radio)
+
+read_runtime_log_tags(radio)
+
+# For CRIU
+allow radio criu:process sigchld;
+
